@@ -271,6 +271,24 @@ footer a:hover{color:#fff}
 @media (max-width:860px){.fgrid{grid-template-columns:1fr 1fr}}
 @media (max-width:480px){.fgrid{grid-template-columns:1fr}}
 .sr{position:absolute;left:-9999px}
+
+/* boton flotante de donar */
+.gb-donar{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;flex-direction:column;align-items:flex-end;gap:.7rem}
+.gb-donar-btn{display:inline-flex;align-items:center;gap:.5rem;border:0;cursor:pointer;background:var(--lime);color:#fff;font:800 1rem var(--display);padding:.85rem 1.3rem;border-radius:999px;box-shadow:0 10px 26px rgba(15,63,40,.32);text-shadow:0 1px 0 rgba(0,0,0,.12);transition:transform .15s}
+.gb-donar-btn:hover{transform:translateY(-2px)}
+.gb-donar-btn svg{width:20px;height:20px}
+.gb-donar-panel{width:min(340px,calc(100vw - 32px));background:#fff;border-radius:20px;box-shadow:0 18px 44px rgba(15,63,40,.25);border:1px solid var(--line);overflow:hidden}
+.gb-donar-panel .top{background:var(--forest);color:#fff;padding:1.1rem 1.2rem;position:relative}
+.gb-donar-panel .top h3{font-size:1.25rem;font-weight:900;color:#fff}
+.gb-donar-panel .top p{color:#d5e6d8;font-size:.92rem;margin-top:.25rem}
+.gb-donar-panel .x{position:absolute;right:.6rem;top:.6rem;width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:1.1rem;cursor:pointer}
+.gb-donar-panel .body{padding:1rem 1.2rem 1.2rem;display:grid;gap:.8rem}
+.gb-donar-panel ul{list-style:none;margin:0;padding:0;display:grid;gap:.35rem;font-size:.93rem}
+.gb-donar-panel li{display:flex;gap:.55rem;align-items:baseline}
+.gb-donar-panel li::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--lime);flex:none;transform:translateY(-.05rem)}
+.gb-donar-panel .soon{background:var(--mint);border-radius:12px;padding:.65rem .8rem;font-size:.88rem;color:var(--forest)}
+.gb-donar-panel .btn{width:100%}
+@media (prefers-reduced-motion:reduce){.gb-donar-btn{transition:none}}
 </style>
 </head>
 <body>
@@ -753,6 +771,41 @@ footer a:hover{color:#fff}
     window.location.href = 'mailto:administracion@greenbalance.org.bo?subject=' + encodeURIComponent('Contacto desde la web - ' + n) + '&body=' + encodeURIComponent(body);
     ok.textContent = 'Se abrirá tu aplicación de correo con el mensaje listo para enviar. Si no se abre, escríbenos a administracion@greenbalance.org.bo.';
   });
+})();
+</script>
+
+<div class="gb-donar" id="gbDonar">
+  <div class="gb-donar-panel" id="gbDonarPanel" role="dialog" aria-labelledby="gbDonarTitle" hidden>
+    <div class="top">
+      <h3 id="gbDonarTitle">Apoya a Green Balance</h3>
+      <p>Tu aporte se conecta con resultados tangibles y medibles.</p>
+      <button class="x" type="button" id="gbDonarClose" aria-label="Cerrar">×</button>
+    </div>
+    <div class="body">
+      <ul>
+        <li>Producción sostenible y recuperación de suelos</li>
+        <li>Conservación de bosques, agua y biodiversidad</li>
+        <li>Ciencia, información y monitoreo</li>
+        <li>Educación y capacitación de comunidades</li>
+      </ul>
+      <p class="soon"><b>Muy pronto podrás donar en línea</b> con tarjeta y QR desde esta página. Mientras tanto, escríbenos y te contamos cómo aportar.</p>
+      <a class="btn" href="#contacto" id="gbDonarGo">Quiero donar</a>
+    </div>
+  </div>
+  <button class="gb-donar-btn" type="button" id="gbDonarBtn" aria-expanded="false" aria-controls="gbDonarPanel">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.6 2.9 5 6.4 5c2 0 3.4 1.1 4.1 2.3h3c.7-1.2 2.1-2.3 4.1-2.3 3.5 0 5.5 3.6 4 6.8C19.5 16.4 12 21 12 21z"/></svg>
+    Donar
+  </button>
+</div>
+<script>
+(function(){
+  var b=document.getElementById('gbDonarBtn'), p=document.getElementById('gbDonarPanel');
+  function set(o){ p.hidden=!o; b.setAttribute('aria-expanded', String(o)); }
+  b.addEventListener('click', function(){ set(p.hidden); });
+  document.getElementById('gbDonarClose').addEventListener('click', function(){ set(false); b.focus(); });
+  document.getElementById('gbDonarGo').addEventListener('click', function(){ set(false); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !p.hidden){ set(false); b.focus(); } });
+  document.addEventListener('click', function(e){ if(!p.hidden && !document.getElementById('gbDonar').contains(e.target)) set(false); });
 })();
 </script>
 </body>
